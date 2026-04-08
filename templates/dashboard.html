@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#121212;color:white;">
+
+<h2>Dashboard stokAR</h2>
+
+<p>Ventas: {{ventas}}</p>
+
+<form method="POST" action="/agregar">
+<input name="nombre" placeholder="Nombre">
+<input name="precio" placeholder="Precio">
+<input name="stock" placeholder="Stock">
+<button>Agregar</button>
+</form>
+
+<hr>
+
+{% for p in productos %}
+<p>
+{{p[1]}} - ${{p[2]}} - Stock: {{p[3]}}
+<a href="/vender/{{p[0]}}">Vender</a>
+</p>
+{% endfor %}
+
+<a href="/logout">Salir</a>
+
+</body>
+</html>
