@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.secret_key = "stocar_secret"
 
 # -------------------------
@@ -63,7 +63,10 @@ def login():
         conn = conectar()
         c = conn.cursor()
 
-        c.execute("SELECT * FROM usuarios WHERE username=? AND password=?", (user, password))
+        c.execute(
+            "SELECT * FROM usuarios WHERE username=? AND password=?",
+            (user, password)
+        )
         usuario = c.fetchone()
 
         conn.close()
@@ -108,7 +111,10 @@ def agregar():
     conn = conectar()
     c = conn.cursor()
 
-    c.execute("INSERT INTO productos VALUES (NULL, ?, ?, ?)", (nombre, precio, stock))
+    c.execute(
+        "INSERT INTO productos VALUES (NULL, ?, ?, ?)",
+        (nombre, precio, stock)
+    )
 
     conn.commit()
     conn.close()
@@ -131,8 +137,14 @@ def vender(id):
         stock = resultado[0]
 
         if stock > 0:
-            c.execute("UPDATE productos SET stock = stock - 1 WHERE id=?", (id,))
-            c.execute("INSERT INTO ventas VALUES (NULL, ?, 1)", (id,))
+            c.execute(
+                "UPDATE productos SET stock = stock - 1 WHERE id=?",
+                (id,)
+            )
+            c.execute(
+                "INSERT INTO ventas VALUES (NULL, ?, 1)",
+                (id,)
+            )
 
     conn.commit()
     conn.close()
