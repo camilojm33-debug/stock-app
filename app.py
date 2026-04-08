@@ -7,12 +7,15 @@ app.secret_key = "stocar_secret"
 
 
 # ---------------------------
-# DB
+# CONEXIÓN DB
 # ---------------------------
 def conectar():
     return sqlite3.connect("stokaR.db")
 
 
+# ---------------------------
+# CREAR DB
+# ---------------------------
 def crear_db():
     conn = conectar()
     c = conn.cursor()
@@ -42,6 +45,7 @@ def crear_db():
     )
     """)
 
+    # crear usuario admin si no existe
     c.execute("SELECT * FROM usuarios WHERE username='admin'")
     if not c.fetchone():
         c.execute("INSERT INTO usuarios VALUES (NULL, 'admin', '1234')")
@@ -154,7 +158,7 @@ def logout():
 
 
 # ---------------------------
-# RUN
+# RUN (IMPORTANTE PARA RENDER)
 # ---------------------------
 if __name__ == "_main_":
     crear_db()
