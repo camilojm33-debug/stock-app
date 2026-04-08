@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session
 import sqlite3
 import os
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.secret_key = "stocar_secret"
 
 
@@ -156,7 +156,7 @@ def logout():
 # ---------------------------
 # RUN
 # ---------------------------
-if _name_ == "_main_":
+if __name__ == "_main_":
     crear_db()
 
     port = int(os.environ.get("PORT", 5000))
