@@ -58,11 +58,11 @@ def login():
         conn = conectar()
         c = conn.cursor()
         c.execute("SELECT * FROM usuarios WHERE username=? AND password=?", (user, pwd))
-        user = c.fetchone()
+        user_db = c.fetchone()
         conn.close()
 
-        if user:
-            session["user"] = user[1]
+        if user_db:
+            session["user"] = user_db[1]
             return redirect("/dashboard")
 
     return render_template("login.html")
@@ -128,6 +128,11 @@ def vender(id):
 def logout():
     session.clear()
     return redirect("/")
+
+
+@app.route("/test")
+def test():
+    return "FUNCIONA FLASK"
 
 
 if __name__ == "__main__":
