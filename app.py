@@ -49,6 +49,7 @@ def crear_db():
 crear_db()
 
 
+# 🔥 RUTA PRINCIPAL (LOGIN)
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -57,7 +58,10 @@ def login():
 
         conn = conectar()
         c = conn.cursor()
-        c.execute("SELECT * FROM usuarios WHERE username=? AND password=?", (user, pwd))
+        c.execute(
+            "SELECT * FROM usuarios WHERE username=? AND password=?",
+            (user, pwd)
+        )
         user_db = c.fetchone()
         conn.close()
 
@@ -68,6 +72,7 @@ def login():
     return render_template("login.html")
 
 
+# 🔥 DASHBOARD
 @app.route("/dashboard")
 def dashboard():
     if "user" not in session:
@@ -87,6 +92,7 @@ def dashboard():
     return render_template("dashboard.html", productos=productos, ventas=ventas)
 
 
+# 🔥 AGREGAR PRODUCTO
 @app.route("/agregar", methods=["POST"])
 def agregar():
     conn = conectar()
@@ -107,16 +113,17 @@ def agregar():
     return redirect("/dashboard")
 
 
+# 🔥 VENDER PRODUCTO
 @app.route("/vender/<int:id>")
 def vender(id):
     conn = conectar()
     c = conn.cursor()
 
     c.execute("SELECT stock FROM productos WHERE id=?", (id,))
-    stock = c.fetchone()[0]
+    stock = c.fetchone()
 
-    if stock > 0:
-        c.execute("UPDATE productos SET stock=? WHERE id=?", (stock - 1, id))
+    if stock and stock[0] > 0:
+        c.execute("UPDATE productos SET stock=? WHERE id=?", (stock[0] - 1, id))
         c.execute("INSERT INTO ventas VALUES(NULL,?,1)", (id,))
         conn.commit()
 
@@ -124,12 +131,14 @@ def vender(id):
     return redirect("/dashboard")
 
 
+# 🔥 LOGOUT
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
 
 
+# 🔥 TEST (para verificar)
 @app.route("/test")
 def test():
     return "FUNCIONA FLASK"
